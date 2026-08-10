@@ -7,7 +7,7 @@ Web Next.js corregida y preparada para actualización automática.
 - El último vídeo y la página de YouTube se actualizan desde el feed oficial del canal `@mariaolid` cada 15 minutos.
 - Entrevistas, meditaciones guiadas, meditacions en català y audiolibros se cargan automáticamente desde las playlists oficiales facilitadas.
 - Los eventos pueden actualizarse automáticamente desde una fuente JSON configurada en `EVENTS_JSON_URL`.
-- Los formularios de contacto, tutorías, retiros y eventos envían un email a María y una confirmación al visitante mediante Resend.
+- Los formularios de contacto, acompañamiento, retiros y eventos envían un email a María y una confirmación al visitante mediante Resend.
 - Si YouTube no responde, la web conserva el contenido local de respaldo para no quedar vacía.
 
 ## Configuración
@@ -44,7 +44,7 @@ La web consulta los feeds públicos de YouTube y revalida el contenido cada 15 m
 ## Ajustes personalizados de María Olid
 
 - Canal y playlists de YouTube configurados en `lib/youtube.ts` y `.env.example`.
-- Fotografías reales incorporadas en portada, Sobre María, YouTube y Tutorías.
+- Fotografías reales incorporadas en portada, Sobre María, YouTube y Acompañamiento.
 - Los botones **Apuntarse** de retiros y encuentros abren un formulario asociado a la actividad seleccionada.
 - El correo receptor predeterminado es `olid.maria@gmail.com`.
 

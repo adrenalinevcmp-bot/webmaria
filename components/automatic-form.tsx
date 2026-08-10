@@ -23,7 +23,7 @@ export function AutomaticForm({ type, context, compact = false }: { type: string
       </div>
       <div className="grid grid-cols-1 gap-4 sm:grid-cols-2">
         <input name="phone" type="tel" autoComplete="tel" className={field} placeholder="Teléfono (opcional)" />
-        {!compact && <select name="reason" className={field} defaultValue=""><option value="" disabled>Motivo</option><option>Información general</option><option>Tutorías</option><option>Retiros</option><option>Eventos</option><option>Otro</option></select>}
+        {!compact && <select name="reason" className={field} defaultValue=""><option value="" disabled>Motivo</option><option>Información general</option><option>Acompañamiento</option><option>Retiros</option><option>Eventos</option><option>Otro</option></select>}
       </div>
       <input name="website" tabIndex={-1} autoComplete="off" className="hidden" aria-hidden="true" />
       <textarea required name="message" rows={compact ? 3 : 5} className={`${field} resize-none`} placeholder="Mensaje" />

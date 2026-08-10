@@ -22,7 +22,7 @@ const mulish = Mulish({
 export const metadata: Metadata = {
   title: 'María Olid · El Despertar',
   description:
-    'El Despertar — espiritualidad, conciencia y transformación interior con María Olid. Meditaciones, retiros, tutorías y entrevistas.',
+    'El Despertar — espiritualidad, conciencia y transformación interior con María Olid. Meditaciones, retiros, acompañamiento y entrevistas.',
   generator: 'v0.app',
 }
 

@@ -14,7 +14,7 @@ export default function PrivacidadPage() {
         <div className="space-y-6">
           <p><strong className="text-foreground">Responsable:</strong> María Olid.</p>
           <p><strong className="text-foreground">Contacto:</strong> <a className="text-primary underline underline-offset-4" href="mailto:olid.maria@gmail.com">olid.maria@gmail.com</a>.</p>
-          <p>Los datos enviados se utilizarán exclusivamente para responder consultas, gestionar solicitudes de tutorías e informar o tramitar inscripciones relacionadas con encuentros y retiros.</p>
+          <p>Los datos enviados se utilizarán exclusivamente para responder consultas, gestionar solicitudes de acompañamiento e informar o tramitar inscripciones relacionadas con encuentros y retiros.</p>
           <p>No se utilizarán para comunicaciones comerciales sin consentimiento y no se cederán a terceros salvo obligación legal o proveedores técnicos necesarios para gestionar el envío de formularios.</p>
           <p>Puedes solicitar acceso, rectificación o eliminación de tus datos escribiendo al correo indicado.</p>
           <p className="text-sm">Este texto es una base informativa y debe revisarse con asesoramiento legal antes de publicar la web definitivamente.</p>

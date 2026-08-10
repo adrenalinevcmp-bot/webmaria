@@ -7,7 +7,7 @@ export const NAV_LINKS = [
   { label: 'YouTube', href: '/youtube' },
   { label: 'Meditaciones', href: '/meditaciones' },
   { label: 'Retiros y Eventos', href: '/retiros' },
-  { label: 'Tutorías', href: '/tutorias' },
+  { label: 'Acompañamiento', href: '/acompanamiento' },
   { label: 'Contacto', href: '/contacto' },
 ]
 
@@ -203,6 +203,7 @@ export type EventItem = {
   description: string
   meta: string
   price?: string
+  image?: string
 }
 
 export const upcomingEvents: EventItem[] = [
@@ -213,12 +214,14 @@ export const upcomingEvents: EventItem[] = [
       'Encuentro mensual. Empieza el 1 de octubre. El primer jueves de cada mes, de 19:30 a 21:30. Compartir desde el Ser.',
     meta: 'Encuentro mensual · Primer jueves de mes · 19:30–21:30',
     price: 'Trimestre: 60 €',
+    image: '/images/REEMPLAZAR-experimento-rendicion.png',
   },
   {
     id: 'ev-2',
     title: 'Próximo retiro del Despertar',
     description: 'Próximo retiro del Despertar en noviembre.',
     meta: 'Retiro · Próximamente',
+    image: '/images/REEMPLAZAR-retiro-cabala-portada.png',
   },
 ]
 
