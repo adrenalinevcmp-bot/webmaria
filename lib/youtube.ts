@@ -4,8 +4,6 @@ const CHANNEL_HANDLE = process.env.YOUTUBE_CHANNEL_HANDLE || '@mariaolid'
 const CHANNEL_URL = process.env.YOUTUBE_CHANNEL_URL || `https://www.youtube.com/${CHANNEL_HANDLE}`
 const CACHE_SECONDS = 900
 
-// Playlists oficiales proporcionadas por María. Las variables de entorno pueden
-// reemplazarlas sin necesidad de modificar el código.
 const DEFAULT_PLAYLISTS = {
   interviews: 'PL9HycyjrHAk0ljDioNSyUUI7YP7I-8-oI',
   meditationsEs: 'PL9HycyjrHAk0v7j3MWRrs3WDbbzovhpcK',
@@ -62,7 +60,7 @@ export async function getYoutubeFeed(playlistId?: string): Promise<VideoItem[]> 
       return {
         id,
         title: text(entry, 'title'),
-        description: text(entry, 'media:description') || 'Vídeo publicado en El Despertar.',
+        description: text(entry, 'media:description') || '',
         thumbnail: attr(entry, 'media:thumbnail', 'url') || `https://i.ytimg.com/vi/${id}/hqdefault.jpg`,
         duration: '',
         date: publishedAt ? new Intl.DateTimeFormat('es-ES', { dateStyle: 'long' }).format(new Date(publishedAt)) : '',
@@ -73,6 +71,44 @@ export async function getYoutubeFeed(playlistId?: string): Promise<VideoItem[]> 
   } catch {
     return []
   }
+}
+
+export async function getYoutubeVideosByIds(ids: string[]): Promise<VideoItem[]> {
+  const results = await Promise.all(ids.map(async (id) => {
+    try {
+      const response = await fetch(
+        `https://www.youtube.com/oembed?url=${encodeURIComponent(`https://www.youtube.com/watch?v=${id}`)}&format=json`,
+        { next: { revalidate: 86400 } },
+      )
+      if (!response.ok) throw new Error('oEmbed unavailable')
+      const data = await response.json() as { title?: string; author_name?: string; thumbnail_url?: string }
+      return {
+        id,
+        title: data.title || 'Vídeo de El Despertar',
+        description: data.author_name || 'El Despertar',
+        thumbnail: data.thumbnail_url || `https://i.ytimg.com/vi/${id}/hqdefault.jpg`,
+        duration: '',
+        date: '',
+        href: `https://www.youtube.com/watch?v=${id}`,
+      } satisfies VideoItem
+    } catch {
+      return {
+        id,
+        title: 'Vídeo de El Despertar',
+        description: 'El Despertar',
+        thumbnail: `https://i.ytimg.com/vi/${id}/hqdefault.jpg`,
+        duration: '',
+        date: '',
+        href: `https://www.youtube.com/watch?v=${id}`,
+      } satisfies VideoItem
+    }
+  }))
+  return results
+}
+
+export async function getYoutubeVideoById(id?: string): Promise<VideoItem | null> {
+  if (!id) return null
+  return (await getYoutubeVideosByIds([id]))[0] || null
 }
 
 export async function getYoutubeContent() {

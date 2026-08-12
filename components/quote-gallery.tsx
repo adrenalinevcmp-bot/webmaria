@@ -14,8 +14,8 @@ export function QuoteGallery() {
 
   return (
     <div className="mx-auto max-w-5xl">
-      <figure className="group relative overflow-hidden rounded-sm bg-muted">
-        <div className="relative aspect-[16/9] min-h-[360px] md:min-h-[520px]">
+      <figure className="group relative overflow-hidden rounded-sm bg-muted shadow-sm">
+        <div className="relative aspect-[4/5] min-h-[500px] sm:aspect-[16/10] sm:min-h-[430px] md:min-h-[540px]">
           <Image
             key={item.image}
             src={item.image || '/placeholder.svg'}
@@ -24,15 +24,15 @@ export function QuoteGallery() {
             sizes="(max-width: 1024px) 100vw, 1000px"
             className="object-cover"
           />
-          <div className="absolute inset-0 bg-gradient-to-t from-black/70 via-black/15 to-black/5" />
-          <figcaption className="absolute inset-x-0 bottom-0 p-7 text-center font-serif text-2xl leading-snug text-white text-balance md:p-12 md:text-4xl">
+          <div className="absolute inset-0 bg-gradient-to-t from-black/75 via-black/20 to-black/5" />
+          <figcaption className="absolute inset-x-12 bottom-7 z-10 mx-auto max-w-3xl text-center font-serif text-[1.65rem] leading-[1.15] text-white text-balance sm:inset-x-16 sm:bottom-9 sm:text-3xl md:bottom-12 md:text-4xl">
             {item.quote}
           </figcaption>
           <button
             type="button"
             onClick={prev}
             aria-label="Ver contemplación anterior"
-            className="absolute left-4 top-1/2 flex h-11 w-11 -translate-y-1/2 items-center justify-center rounded-full bg-background/85 text-foreground shadow-sm transition-transform hover:scale-105 md:left-6"
+            className="absolute left-3 top-1/2 z-20 flex h-10 w-10 -translate-y-1/2 items-center justify-center rounded-full bg-background/90 text-foreground shadow-sm transition-transform hover:scale-105 sm:left-5 md:h-11 md:w-11"
           >
             <ChevronLeft className="h-5 w-5" />
           </button>
@@ -40,7 +40,7 @@ export function QuoteGallery() {
             type="button"
             onClick={next}
             aria-label="Ver siguiente contemplación"
-            className="absolute right-4 top-1/2 flex h-11 w-11 -translate-y-1/2 items-center justify-center rounded-full bg-background/85 text-foreground shadow-sm transition-transform hover:scale-105 md:right-6"
+            className="absolute right-3 top-1/2 z-20 flex h-10 w-10 -translate-y-1/2 items-center justify-center rounded-full bg-background/90 text-foreground shadow-sm transition-transform hover:scale-105 sm:right-5 md:h-11 md:w-11"
           >
             <ChevronRight className="h-5 w-5" />
           </button>

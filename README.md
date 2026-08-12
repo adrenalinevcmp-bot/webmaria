@@ -1,78 +1,48 @@
 # María Olid · El Despertar
 
-Web Next.js corregida y preparada para actualización automática.
+Web Next.js para María Olid. Está preparada para desplegarse en Vercel y actualizar automáticamente el contenido de YouTube.
 
-## Qué queda automático
+## Automatización principal
 
-- El último vídeo y la página de YouTube se actualizan desde el feed oficial del canal `@mariaolid` cada 15 minutos.
-- Entrevistas, meditaciones guiadas, meditacions en català y audiolibros se cargan automáticamente desde las playlists oficiales facilitadas.
-- Los eventos pueden actualizarse automáticamente desde una fuente JSON configurada en `EVENTS_JSON_URL`.
-- Los formularios de contacto, acompañamiento, retiros y eventos envían un email a María y una confirmación al visitante mediante Resend.
-- Si YouTube no responde, la web conserva el contenido local de respaldo para no quedar vacía.
+- La portada usa como vídeo semanal la entrevista más reciente de la playlist oficial de entrevistas.
+- La página YouTube muestra automáticamente última entrevista, entrevista anterior y archivo reciente.
+- Meditaciones, vídeos para profundizar y audiolibro utilizan los vídeos definidos/configurados para cada sección.
+- Los formularios de contacto, retiros, eventos y acompañamiento se envían a `olid.maria@gmail.com`.
 
-## Configuración
+Consulta `GUIA-CONTENIDO-MARIA.md` para saber cómo actualizar vídeos, entrevista atemporal, imágenes y eventos.
 
-1. Copia `.env.example` como `.env.local`.
-2. Las playlists oficiales ya están incluidas como valores predeterminados y también en `.env.example`. Solo necesitas cambiarlas si en el futuro se reemplaza alguna playlist.
-3. Crea una cuenta en Resend, verifica el dominio y completa `RESEND_API_KEY`, `EMAIL_FROM` y `ADMIN_NOTIFICATION_EMAIL`.
-4. Añade el enlace real de Instagram.
-5. Ejecuta `pnpm install` y `pnpm dev`.
+## Variables de entorno
 
-## Fotografías
+Copia `.env.example` como `.env.local` para desarrollo. En Vercel configura las variables necesarias en **Project → Settings → Environment Variables**.
 
-Reemplaza conservando los nombres:
+### YouTube
 
-- `public/images/maria-hero.png`
-- `public/images/maria-about.png`
-- `public/images/retreat.png`
-- `public/images/gallery-1.png` a `gallery-5.png`
-
-## Nota sobre administración
-
-Esta versión prioriza automatización real sin añadir una base de datos obligatoria. YouTube y los formularios funcionan con las variables indicadas. Para editar eventos y fotografías desde un login privado hace falta conectar un CMS o Supabase; no debe simularse, ya que necesita un proyecto y credenciales externas reales.
-
-
-## Playlists automáticas configuradas
+Las playlists oficiales ya tienen valores predeterminados en el código:
 
 - Entrevistas: `PL9HycyjrHAk0ljDioNSyUUI7YP7I-8-oI`
 - Meditaciones guiadas: `PL9HycyjrHAk0v7j3MWRrs3WDbbzovhpcK`
-- Meditacions en català: `PL9HycyjrHAk2IIBJVzA3Zzp8AahrJo5Gz`
+- Meditaciones en catalán: `PL9HycyjrHAk2IIBJVzA3Zzp8AahrJo5Gz`
 - Audiolibros: `PL9HycyjrHAk10Od_hCorgb-B3B2W4PNxs`
 
-La web consulta los feeds públicos de YouTube y revalida el contenido cada 15 minutos. Al añadir un vídeo a una de estas playlists, aparecerá automáticamente en su sección correspondiente.
+### Formularios
 
-## Ajustes personalizados de María Olid
-
-- Canal y playlists de YouTube configurados en `lib/youtube.ts` y `.env.example`.
-- Fotografías reales incorporadas en portada, Sobre María, YouTube y Acompañamiento.
-- Los botones **Apuntarse** de retiros y encuentros abren un formulario asociado a la actividad seleccionada.
-- El correo receptor predeterminado es `olid.maria@gmail.com`.
-
-### Envío de formularios
-
-La opción recomendada es configurar Resend en Vercel:
+Recomendado en Vercel:
 
 ```env
 RESEND_API_KEY=...
 EMAIL_FROM=El Despertar <web@tudominio.com>
 ADMIN_NOTIFICATION_EMAIL=olid.maria@gmail.com
+NEXT_PUBLIC_CONTACT_EMAIL=olid.maria@gmail.com
 ```
 
-Mientras Resend no esté configurado, el proyecto usa FormSubmit como alternativa. En el primer envío, FormSubmit enviará un mensaje de activación a `olid.maria@gmail.com`; María deberá confirmar ese correo una sola vez para autorizar la recepción de formularios.
+Si Resend no está configurado, la API intenta usar FormSubmit con `olid.maria@gmail.com`.
 
-### Fotografías incorporadas
+## Imágenes
 
-- `public/images/maria-hero-real.png`
-- `public/images/maria-about-real.jpg`
-- `public/images/maria-tutorias-real.jpg`
-- `public/images/maria-youtube-cutout.png`
+Las imágenes de eventos que todavía son provisionales tienen nombres claros que empiezan por `REEMPLAZAR-` dentro de `public/images/`.
 
-### Nota legal
-
-La página `/privacidad` contiene una base informativa. Debe revisarse con asesoramiento legal antes de publicar definitivamente.
-
-## Imágenes fáciles de reemplazar
-Consulta `GUIA-REEMPLAZO-IMAGENES.md`. Todos los archivos pendientes comienzan por `REEMPLAZAR-`.
+Las nuevas contemplaciones están guardadas como `contemplacion-01-...` hasta `contemplacion-05-...`.
 
 ## Administración
-La ruta `/admin` explica el estado actual. No se incluye un falso panel local: para un login que cambie contenido públicamente se requiere Supabase o un CMS con credenciales reales.
+
+La ruta `/admin` sigue siendo informativa. Para un panel de login real que permita cambiar contenido públicamente sin tocar GitHub hace falta conectar Supabase o un CMS con credenciales reales.

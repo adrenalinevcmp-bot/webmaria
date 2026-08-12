@@ -1,7 +1,6 @@
 import type { Metadata } from 'next'
-import { Mail } from 'lucide-react'
+import { Mail, MessageCircle } from 'lucide-react'
 import { InstagramIcon, YoutubeIcon } from '@/components/social-icons'
-import { PageHeader } from '@/components/page-header'
 import { ContactForm } from '@/components/contact-form'
 import { SOCIAL_LINKS } from '@/lib/data'
 
@@ -10,65 +9,45 @@ export const metadata: Metadata = {
   description: 'Ponte en contacto con María Olid y el proyecto El Despertar.',
 }
 
+const EMAIL = 'olid.maria@gmail.com'
+const WHATSAPP = 'https://wa.me/34620430048'
+
 export default function ContactoPage() {
   return (
-    <>
-      <PageHeader
-        eyebrow="Contacto"
-        title="Escríbeme"
-        intro="Si sientes el llamado a compartir, preguntar o acompañarte, escríbeme. Con gusto te responderé."
-      />
+    <section className="mx-auto max-w-6xl px-5 pb-12 pt-7 md:px-8 md:pb-14 md:pt-9">
+      <div className="mb-8 max-w-3xl">
+        <h1 className="font-serif text-4xl font-medium leading-tight text-foreground md:text-5xl">Escríbeme</h1>
+        <p className="mt-4 text-base leading-relaxed text-foreground/75 md:text-lg">Si sientes el llamado a compartir, preguntar o acompañarte, escríbeme. Con gusto te responderé.</p>
+      </div>
 
-      <section className="mx-auto max-w-6xl px-5 py-16 md:px-8 md:py-20">
-        <div className="grid grid-cols-1 gap-12 lg:grid-cols-[1fr_1.6fr] lg:gap-16">
-          <aside className="flex flex-col gap-8">
-            <div className="flex flex-col gap-3">
-              <h2 className="font-serif text-2xl font-medium text-foreground">
-                Hablemos
-              </h2>
-              <p className="text-base leading-relaxed text-muted-foreground text-pretty">
-                Comunicar lo que somos es dar lo que recibes. Estaré encantada de
-                escucharte.
-              </p>
-            </div>
-
-            <div className="flex flex-col gap-4">
-              <a
-                href={SOCIAL_LINKS.instagram}
-                target="_blank"
-                rel="noopener noreferrer"
-                className="flex items-center gap-3 text-sm text-muted-foreground transition-colors hover:text-primary"
-              >
-                <span className="flex h-10 w-10 items-center justify-center rounded-full border border-border">
-                  <InstagramIcon className="h-[18px] w-[18px]" />
-                </span>
-                Instagram
-              </a>
-              <a
-                href={SOCIAL_LINKS.youtube}
-                target="_blank"
-                rel="noopener noreferrer"
-                className="flex items-center gap-3 text-sm text-muted-foreground transition-colors hover:text-primary"
-              >
-                <span className="flex h-10 w-10 items-center justify-center rounded-full border border-border">
-                  <YoutubeIcon className="h-[18px] w-[18px]" />
-                </span>
-                YouTube · El Despertar
-              </a>
-              <span className="flex items-center gap-3 text-sm text-muted-foreground">
-                <span className="flex h-10 w-10 items-center justify-center rounded-full border border-border">
-                  <Mail className="h-[18px] w-[18px]" />
-                </span>
-                {process.env.NEXT_PUBLIC_CONTACT_EMAIL || 'Correo por confirmar'}
-              </span>
-            </div>
-          </aside>
-
-          <div className="rounded-sm border border-border bg-card p-6 md:p-10">
-            <ContactForm />
+      <div className="grid grid-cols-1 gap-6 lg:grid-cols-[0.85fr_1.5fr] lg:gap-8">
+        <aside className="flex flex-col gap-4">
+          <div className="rounded-sm border border-primary/15 bg-secondary/65 p-6">
+            <h2 className="font-serif text-2xl font-medium text-foreground">Hablemos</h2>
+            <p className="mt-3 text-base font-medium leading-relaxed text-foreground/80 text-pretty">Comunicar lo que somos es dar lo que recibes. Estaré encantada de escucharte.</p>
           </div>
+
+          <div className="rounded-sm border border-primary/20 bg-card p-6">
+            <p className="mb-4 text-xs font-semibold uppercase tracking-[0.3em] text-primary">Contacto directo</p>
+            <div className="flex flex-col gap-4">
+              <a href={`mailto:${EMAIL}`} className="flex items-center gap-3 text-sm font-medium text-foreground/80 transition-colors hover:text-primary"><span className="flex h-10 w-10 items-center justify-center rounded-full border border-primary/25 bg-secondary/50"><Mail className="h-[18px] w-[18px]" /></span>{EMAIL}</a>
+              <a href={WHATSAPP} target="_blank" rel="noopener noreferrer" className="flex items-center gap-3 text-sm font-medium text-foreground/80 transition-colors hover:text-primary"><span className="flex h-10 w-10 items-center justify-center rounded-full border border-primary/25 bg-secondary/50"><MessageCircle className="h-[18px] w-[18px]" /></span>WhatsApp +34 620 430 048</a>
+            </div>
+          </div>
+
+          <div className="rounded-sm border border-primary/20 bg-primary/8 p-6">
+            <p className="mb-4 text-xs font-semibold uppercase tracking-[0.3em] text-primary">Redes</p>
+            <div className="flex flex-col gap-4">
+              <a href={SOCIAL_LINKS.instagram} target="_blank" rel="noopener noreferrer" className="flex items-center gap-3 text-sm font-medium text-foreground/80 transition-colors hover:text-primary"><span className="flex h-10 w-10 items-center justify-center rounded-full border border-primary/25 bg-background/80"><InstagramIcon className="h-[18px] w-[18px]" /></span>Instagram</a>
+              <a href={SOCIAL_LINKS.youtube} target="_blank" rel="noopener noreferrer" className="flex items-center gap-3 text-sm font-medium text-foreground/80 transition-colors hover:text-primary"><span className="flex h-10 w-10 items-center justify-center rounded-full border border-primary/25 bg-background/80"><YoutubeIcon className="h-[18px] w-[18px]" /></span>YouTube · El Despertar</a>
+            </div>
+          </div>
+        </aside>
+
+        <div className="rounded-sm border border-primary/20 bg-card p-6 md:p-10">
+          <ContactForm />
         </div>
-      </section>
-    </>
+      </div>
+    </section>
   )
 }
