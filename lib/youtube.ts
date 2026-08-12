@@ -53,7 +53,7 @@ export async function getYoutubeFeed(playlistId?: string): Promise<VideoItem[]> 
       return r.text()
     })
 
-    return [...xml.matchAll(/<entry>([\s\S]*?)<\/entry>/g)].map((match) => {
+    const videos = [...xml.matchAll(/<entry>([\s\S]*?)<\/entry>/g)].map((match) => {
       const entry = match[1]
       const id = text(entry, 'yt:videoId')
       const publishedAt = text(entry, 'published')
@@ -67,6 +67,15 @@ export async function getYoutubeFeed(playlistId?: string): Promise<VideoItem[]> 
         publishedAt,
         href: `https://www.youtube.com/watch?v=${id}`,
       }
+    })
+
+    // Nunca confiar en el orden devuelto por la playlist/RSS. Algunas playlists
+    // pueden estar ordenadas manualmente de antiguo a nuevo. Para "último vídeo"
+    // y "última entrevista" necesitamos siempre la fecha real de publicación.
+    return videos.sort((a, b) => {
+      const aTime = a.publishedAt ? new Date(a.publishedAt).getTime() : 0
+      const bTime = b.publishedAt ? new Date(b.publishedAt).getTime() : 0
+      return bTime - aTime
     })
   } catch {
     return []

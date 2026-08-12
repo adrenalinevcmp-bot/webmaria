@@ -25,9 +25,9 @@ function shortDescription(description: string) {
 
 export default async function HomePage() {
   const youtube = await getYoutubeContent()
-  // El vídeo semanal de portada se alimenta de la playlist de entrevistas.
-  // Al añadir una nueva entrevista a esa playlist, esta sección se actualiza sola.
-  const featuredVideo = youtube.interviews[0] || youtube.all[0] || fallbackVideo
+  // "Último vídeo" debe ser literalmente la publicación más reciente del canal.
+  // Las entrevistas siguen ordenadas de más reciente a más antigua en /youtube.
+  const featuredVideo = youtube.all[0] || youtube.interviews[0] || fallbackVideo
   const upcomingEvents = await getUpcomingEvents()
 
   return (

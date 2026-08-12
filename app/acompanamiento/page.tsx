@@ -22,14 +22,15 @@ export default function AcompanamientoPage() {
     <>
       <section className="border-b border-primary/15 bg-secondary/65">
         <div className="mx-auto grid max-w-6xl grid-cols-1 items-center gap-9 px-5 py-8 md:px-8 md:py-10 lg:grid-cols-[0.9fr_1.1fr] lg:gap-14">
-          <div className="relative min-h-[360px] overflow-hidden rounded-sm bg-background/40 sm:min-h-[470px]">
+          <div className="flex min-h-[360px] items-end justify-center overflow-hidden rounded-sm bg-background/40 sm:min-h-[430px]">
             <Image
               src="/images/maria-ojos-cerrados.png"
               alt="María Olid con los ojos cerrados"
-              fill
+              width={404}
+              height={375}
               priority
-              sizes="(max-width: 1024px) 100vw, 42vw"
-              className="object-contain object-bottom"
+              sizes="(max-width: 1024px) 92vw, 42vw"
+              className="h-auto w-full max-w-[520px] object-contain object-bottom"
             />
           </div>
           <div className="flex flex-col gap-5">
