@@ -20,24 +20,22 @@ const details = [
 export default function AcompanamientoPage() {
   return (
     <>
-      <section className="border-b border-primary/15 bg-secondary/65">
-        <div className="mx-auto grid max-w-6xl grid-cols-1 items-center gap-9 px-5 py-8 md:px-8 md:py-10 lg:grid-cols-[0.9fr_1.1fr] lg:gap-14">
-          <div className="flex min-h-[360px] items-end justify-center overflow-hidden rounded-sm bg-background/40 sm:min-h-[430px]">
-            <Image
-              src="/images/maria-ojos-cerrados.png"
-              alt="María Olid con los ojos cerrados"
-              width={404}
-              height={375}
-              priority
-              sizes="(max-width: 1024px) 92vw, 42vw"
-              className="h-auto w-full max-w-[520px] object-contain object-bottom"
-            />
-          </div>
-          <div className="flex flex-col gap-5">
-            <span className="text-xs font-semibold uppercase tracking-[0.35em] text-primary">Acompañamiento individual</span>
-            <h1 className="font-serif text-4xl font-medium leading-tight text-foreground md:text-5xl">Un espacio de acompañamiento y claridad interior</h1>
-            <p className="text-[1.02rem] leading-[1.8] text-foreground/75 text-pretty md:text-lg">
-              Las sesiones individuales se realizan de forma online, mediante Zoom. Para poder participar, solo necesitas disponer de cámara, micrófono y una conexión a internet estable, en un espacio tranquilo donde puedas estar presente y sin interrupciones. El sentido profundo de este encuentro es facilitar un regreso a la Paz, soltando progresivamente las interpretaciones, defensas y formas de identificación que nos alejan de nuestra verdadera naturaleza.
+      <section className="relative isolate min-h-[520px] overflow-hidden border-b border-primary/15 md:min-h-[620px]">
+        <Image
+          src="/images/contemplacion-04-acantilados.png"
+          alt="Paisaje abierto junto al mar"
+          fill
+          priority
+          sizes="100vw"
+          className="object-cover"
+        />
+        <div className="absolute inset-0 bg-foreground/35" />
+        <div className="relative mx-auto flex min-h-[520px] max-w-6xl items-center px-5 py-16 md:min-h-[620px] md:px-8">
+          <div className="max-w-3xl text-background drop-shadow-sm">
+            <p className="font-serif text-4xl font-medium leading-tight md:text-6xl">“Acoger la Vida, acompañando la vida”</p>
+            <p className="mt-4 font-serif text-2xl italic md:text-3xl">María Olid</p>
+            <p className="mt-8 max-w-2xl text-lg leading-relaxed text-background/95 md:text-xl">
+              Un espacio de acompañamiento espiritual y claridad interior para la vida diaria.
             </p>
           </div>
         </div>

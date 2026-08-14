@@ -44,7 +44,6 @@ export default async function MeditacionesPage() {
     getYoutubeVideosByIds(MEDITATION_ES_VIDEO_IDS),
     getYoutubeVideosByIds(MEDITATION_CA_VIDEO_IDS),
   ])
-
   const es = fixedEs.length ? fixedEs.map(toMeditation) : fallbackEs
   const ca = fixedCa.length ? fixedCa.map(toMeditation) : fallbackCa
   const audiobooks = data.audiobooks.map((v) => ({
@@ -55,16 +54,15 @@ export default async function MeditacionesPage() {
   return (
     <>
       <section className="border-b border-primary/15 bg-secondary/65">
-        <div className="mx-auto grid max-w-6xl grid-cols-1 items-center gap-9 px-5 py-8 md:px-8 md:py-10 lg:grid-cols-[0.9fr_1.1fr] lg:gap-14">
-          <div className="flex min-h-[360px] items-end justify-center overflow-hidden rounded-sm bg-background/40 sm:min-h-[430px]">
+        <div className="mx-auto grid max-w-6xl grid-cols-1 items-center gap-9 px-5 py-8 md:px-8 md:py-10 lg:grid-cols-[0.95fr_1.05fr] lg:gap-14">
+          <div className="relative mx-auto aspect-[4/5] w-full max-w-[520px] overflow-hidden rounded-sm bg-background/40 shadow-sm">
             <Image
-              src="/images/maria-ojos-cerrados.png"
+              src="/images/maria-meditaciones-primer-plano.jpg"
               alt="María Olid con los ojos cerrados"
-              width={404}
-              height={375}
+              fill
               priority
-              sizes="(max-width: 1024px) 92vw, 42vw"
-              className="h-auto w-full max-w-[520px] object-contain object-bottom"
+              sizes="(max-width: 1024px) 100vw, 44vw"
+              className="object-cover object-center"
             />
           </div>
           <div className="flex flex-col gap-5">
@@ -104,7 +102,6 @@ export default async function MeditacionesPage() {
           )}
         </div>
       </section>
-
       <ContactCta />
     </>
   )
