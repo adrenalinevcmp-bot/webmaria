@@ -1,16 +1,22 @@
 import type { VideoItem } from './data'
 
-// Identificadores públicos y permanentes del canal de María Olid.
-// No requieren API key ni variables de entorno en Vercel.
-const CHANNEL_ID = 'UCCKT2CfJS7ifYsDo8s2uYtw'
-const UPLOADS_PLAYLIST_ID = 'UUCKT2CfJS7ifYsDo8s2uYtw'
-const CACHE_SECONDS = 300
+const CHANNEL_HANDLE = process.env.YOUTUBE_CHANNEL_HANDLE || '@mariaolid'
+const CHANNEL_ID = process.env.YOUTUBE_CHANNEL_ID || 'UCCKT2CfJS7ifYsDo8s2uYtw'
+const CHANNEL_URL = `https://www.youtube.com/${CHANNEL_HANDLE}`
+const CHANNEL_VIDEOS_URL = `https://www.youtube.com/channel/${CHANNEL_ID}/videos`
+const RSS_URL = `https://www.youtube.com/feeds/videos.xml?channel_id=${CHANNEL_ID}`
 
 const DEFAULT_PLAYLISTS = {
   interviews: 'PL9HycyjrHAk0ljDioNSyUUI7YP7I-8-oI',
   meditationsEs: 'PL9HycyjrHAk0v7j3MWRrs3WDbbzovhpcK',
   meditationsCa: 'PL9HycyjrHAk2IIBJVzA3Zzp8AahrJo5Gz',
   audiobooks: 'PL9HycyjrHAk10Od_hCorgb-B3B2W4PNxs',
+}
+
+const BROWSER_HEADERS = {
+  'User-Agent': 'Mozilla/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit/537.36 Chrome/131 Safari/537.36',
+  'Accept-Language': 'es-ES,es;q=0.9,en;q=0.8',
+  Accept: 'text/html,application/xhtml+xml,application/xml;q=0.9,*/*;q=0.8',
 }
 
 function formatDate(value?: string) {
@@ -49,13 +55,21 @@ function attr(entry: string, tag: string, name: string) {
   return match ? decodeXml(match[1]) : ''
 }
 
-function parseFeed(xml: string): VideoItem[] {
+async function fetchText(url: string) {
+  const response = await fetch(url, {
+    headers: BROWSER_HEADERS,
+    cache: 'no-store',
+  })
+  if (!response.ok) throw new Error(`YouTube respondió ${response.status}`)
+  return response.text()
+}
+
+function parseRss(xml: string): VideoItem[] {
   const videos = [...xml.matchAll(/<entry>([\s\S]*?)<\/entry>/g)].flatMap((match) => {
     const entry = match[1]
     const id = text(entry, 'yt:videoId')
     if (!id) return []
     const publishedAt = text(entry, 'published')
-
     return [{
       id,
       title: text(entry, 'title') || 'Vídeo de El Despertar',
@@ -67,88 +81,100 @@ function parseFeed(xml: string): VideoItem[] {
       href: `https://www.youtube.com/watch?v=${id}`,
     } satisfies VideoItem]
   })
-
   return sortNewest(videos)
 }
 
-async function fetchRss(url: string): Promise<VideoItem[]> {
-  try {
-    const response = await fetch(url, {
-      headers: {
-        'User-Agent': 'Mozilla/5.0 (compatible; ElDespertarWebsite/1.0)',
-        Accept: 'application/atom+xml,application/xml,text/xml,*/*',
-      },
-      next: { revalidate: CACHE_SECONDS },
-    })
+function firstVideoIdFromChannelHtml(html: string) {
+  // En la pestaña /videos, YouTube renderiza los vídeos del canal de más reciente a más antiguo.
+  // Priorizamos videoRenderer/gridVideoRenderer y dejamos un regex genérico como respaldo.
+  return (
+    html.match(/"videoRenderer":\{"videoId":"([\w-]{11})"/)?.[1] ||
+    html.match(/"gridVideoRenderer":\{"videoId":"([\w-]{11})"/)?.[1] ||
+    html.match(/"videoId":"([\w-]{11})"/)?.[1] ||
+    ''
+  )
+}
 
-    if (!response.ok) return []
-    return parseFeed(await response.text())
-  } catch (error) {
-    console.error('No se pudo cargar el feed público de YouTube', error)
+async function hydrateVideo(id: string): Promise<VideoItem> {
+  try {
+    const response = await fetch(
+      `https://www.youtube.com/oembed?url=${encodeURIComponent(`https://www.youtube.com/watch?v=${id}`)}&format=json`,
+      { cache: 'no-store' },
+    )
+    if (!response.ok) throw new Error('oEmbed unavailable')
+    const data = await response.json() as { title?: string; author_name?: string; thumbnail_url?: string }
+    return {
+      id,
+      title: data.title || 'Vídeo de El Despertar',
+      description: '',
+      thumbnail: data.thumbnail_url || `https://i.ytimg.com/vi/${id}/hqdefault.jpg`,
+      duration: '',
+      date: 'Último contenido',
+      href: `https://www.youtube.com/watch?v=${id}`,
+    }
+  } catch {
+    return {
+      id,
+      title: 'Último vídeo de El Despertar',
+      description: '',
+      thumbnail: `https://i.ytimg.com/vi/${id}/hqdefault.jpg`,
+      duration: '',
+      date: 'Último contenido',
+      href: `https://www.youtube.com/watch?v=${id}`,
+    }
+  }
+}
+
+export async function getLatestChannelVideo(): Promise<VideoItem | null> {
+  // 1) Feed RSS oficial del canal: no usa API key ni variables de Vercel.
+  try {
+    const xml = await fetchText(RSS_URL)
+    const videos = parseRss(xml)
+    if (videos[0]) return videos[0]
+  } catch {
+    // seguimos con HTML público
+  }
+
+  // 2) Página pública /videos por ID permanente del canal.
+  for (const url of [CHANNEL_VIDEOS_URL, `${CHANNEL_URL}/videos`]) {
+    try {
+      const html = await fetchText(url)
+      const id = firstVideoIdFromChannelHtml(html)
+      if (id) return await hydrateVideo(id)
+    } catch {
+      // probar la siguiente fuente
+    }
+  }
+
+  return null
+}
+
+async function getPlaylistRss(playlistId: string): Promise<VideoItem[]> {
+  try {
+    const xml = await fetchText(`https://www.youtube.com/feeds/videos.xml?playlist_id=${encodeURIComponent(playlistId)}`)
+    return parseRss(xml)
+  } catch {
     return []
   }
 }
 
-/**
- * Obtiene vídeos públicos de YouTube sin API key.
- * - Sin playlistId: usa el feed del canal y, si hiciera falta, la playlist
- *   pública de subidas del canal como segundo intento.
- * - Con playlistId: usa directamente el feed RSS de esa playlist.
- *
- * YouTube devuelve un feed limitado a los contenidos recientes, que es justo
- * lo que necesitamos para "Último vídeo" y las secciones de contenido reciente.
- */
 export async function getYoutubeFeed(playlistId?: string): Promise<VideoItem[]> {
-  if (playlistId) {
-    return fetchRss(`https://www.youtube.com/feeds/videos.xml?playlist_id=${encodeURIComponent(playlistId)}`)
+  if (playlistId) return getPlaylistRss(playlistId)
+  try {
+    return parseRss(await fetchText(RSS_URL))
+  } catch {
+    const latest = await getLatestChannelVideo()
+    return latest ? [latest] : []
   }
-
-  const channelVideos = await fetchRss(
-    `https://www.youtube.com/feeds/videos.xml?channel_id=${encodeURIComponent(CHANNEL_ID)}`,
-  )
-  if (channelVideos.length) return channelVideos
-
-  // Segundo intento sin ninguna credencial: playlist automática "Uploads".
-  return fetchRss(
-    `https://www.youtube.com/feeds/videos.xml?playlist_id=${encodeURIComponent(UPLOADS_PLAYLIST_ID)}`,
-  )
 }
 
 export async function getYoutubeVideosByIds(ids: string[]): Promise<VideoItem[]> {
-  return Promise.all(ids.map(async (id) => {
-    try {
-      const response = await fetch(
-        `https://www.youtube.com/oembed?url=${encodeURIComponent(`https://www.youtube.com/watch?v=${id}`)}&format=json`,
-        { next: { revalidate: 86400 } },
-      )
-      if (!response.ok) throw new Error('oEmbed unavailable')
-      const data = await response.json() as { title?: string; author_name?: string; thumbnail_url?: string }
-      return {
-        id,
-        title: data.title || 'Vídeo de El Despertar',
-        description: data.author_name || 'El Despertar',
-        thumbnail: data.thumbnail_url || `https://i.ytimg.com/vi/${id}/hqdefault.jpg`,
-        duration: '',
-        date: '',
-        href: `https://www.youtube.com/watch?v=${id}`,
-      } satisfies VideoItem
-    } catch {
-      return {
-        id,
-        title: 'Vídeo de El Despertar',
-        description: 'El Despertar',
-        thumbnail: `https://i.ytimg.com/vi/${id}/hqdefault.jpg`,
-        duration: '',
-        date: '',
-        href: `https://www.youtube.com/watch?v=${id}`,
-      } satisfies VideoItem
-    }
-  }))
+  return Promise.all(ids.map(hydrateVideo))
 }
 
 export async function getYoutubeVideoById(id?: string): Promise<VideoItem | null> {
   if (!id) return null
-  return (await getYoutubeVideosByIds([id]))[0] || null
+  return hydrateVideo(id)
 }
 
 export async function getYoutubeContent() {
@@ -160,18 +186,19 @@ export async function getYoutubeContent() {
     retreats: process.env.YOUTUBE_RETREATS_PLAYLIST_ID || '',
   }
 
-  const [all, interviews, meditationsEs, meditationsCa, audiobooks, retreats] = await Promise.all([
-    getYoutubeFeed(),
-    getYoutubeFeed(ids.interviews),
-    getYoutubeFeed(ids.meditationsEs),
-    getYoutubeFeed(ids.meditationsCa),
-    getYoutubeFeed(ids.audiobooks),
-    ids.retreats ? getYoutubeFeed(ids.retreats) : Promise.resolve([]),
+  const [latest, interviews, meditationsEs, meditationsCa, audiobooks, retreats] = await Promise.all([
+    getLatestChannelVideo(),
+    getPlaylistRss(ids.interviews),
+    getPlaylistRss(ids.meditationsEs),
+    getPlaylistRss(ids.meditationsCa),
+    getPlaylistRss(ids.audiobooks),
+    ids.retreats ? getPlaylistRss(ids.retreats) : Promise.resolve([]),
   ])
 
   return {
-    all,
-    interviews: interviews.length ? interviews : all,
+    all: latest ? [latest] : [],
+    latest,
+    interviews,
     meditationsEs,
     meditationsCa,
     audiobooks,

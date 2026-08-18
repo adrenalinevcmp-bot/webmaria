@@ -5,6 +5,8 @@ import { ContactCta } from '@/components/contact-cta'
 import { DEEPENING_VIDEO_IDS, previousInterviews as fallbackPrevious } from '@/lib/data'
 import { getYoutubeContent, getYoutubeVideosByIds } from '@/lib/youtube'
 
+export const dynamic = 'force-dynamic'
+export const revalidate = 0
 export const metadata: Metadata = {
   title: 'YouTube · El Despertar',
   description: 'Entrevistas, reflexiones y conversaciones profundas sobre espiritualidad, conciencia y transformación interior.',

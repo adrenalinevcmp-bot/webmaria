@@ -6,9 +6,11 @@ import { QuoteGallery } from '@/components/quote-gallery'
 import { EventCard } from '@/components/event-card'
 import { featuredVideo as fallbackVideo } from '@/lib/data'
 import { getUpcomingEvents } from '@/lib/events'
-import { getYoutubeContent } from '@/lib/youtube'
+import { getLatestChannelVideo } from '@/lib/youtube'
 import { ContactCta } from '@/components/contact-cta'
 
+export const dynamic = 'force-dynamic'
+export const revalidate = 0
 const HERO_VIDEO_ID = 'jMi5r7K2DQM'
 
 function shortDescription(description: string) {
@@ -24,10 +26,9 @@ function shortDescription(description: string) {
 }
 
 export default async function HomePage() {
-  const youtube = await getYoutubeContent()
-  // "Último vídeo" debe ser literalmente la publicación más reciente del canal.
-  // Las entrevistas siguen ordenadas de más reciente a más antigua en /youtube.
-  const featuredVideo = youtube.all[0] || youtube.interviews[0] || fallbackVideo
+  // Consulta únicamente el canal público para evitar depender de playlists o variables externas.
+  const latestVideo = await getLatestChannelVideo()
+  const featuredVideo = latestVideo || fallbackVideo
   const upcomingEvents = await getUpcomingEvents()
 
   return (

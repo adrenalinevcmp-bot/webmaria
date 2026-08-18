@@ -24,13 +24,13 @@ export type VideoItem = {
 }
 
 export const featuredVideo: VideoItem = {
-  id: 'v-featured',
-  title: 'El sentido de la vida se encuentra sirviendo a la vida',
-  description: 'Una conversación profunda sobre el despertar, el amor y nuestra conexión con la vida.',
-  thumbnail: '/images/REEMPLAZAR-respaldo-video-destacado.png',
+  id: '7yyha0L1FDY',
+  title: 'A LESSON in LOVE | DORA GIL',
+  description: 'Último contenido del canal El Despertar.',
+  thumbnail: 'https://i.ytimg.com/vi/7yyha0L1FDY/hqdefault.jpg',
   duration: '',
   date: 'Último contenido disponible',
-  href: 'https://www.youtube.com/@mariaolid',
+  href: 'https://www.youtube.com/watch?v=7yyha0L1FDY',
 }
 
 export const previousInterviews: VideoItem[] = [

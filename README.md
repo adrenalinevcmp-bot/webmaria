@@ -46,8 +46,3 @@ Las nuevas contemplaciones están guardadas como `contemplacion-01-...` hasta `c
 ## Administración
 
 La ruta `/admin` sigue siendo informativa. Para un panel de login real que permita cambiar contenido públicamente sin tocar GitHub hace falta conectar Supabase o un CMS con credenciales reales.
-
-## Último vídeo de YouTube
-
-La portada obtiene automáticamente el último vídeo público del canal `@mariaolid` mediante el feed RSS público de YouTube. El ID permanente del canal está incluido en `lib/youtube.ts`, por lo que **no hace falta crear una API key ni configurar variables de YouTube en Vercel**. La caché se renueva cada 5 minutos.
-
