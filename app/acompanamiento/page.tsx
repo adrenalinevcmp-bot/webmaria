@@ -22,8 +22,8 @@ export default function AcompanamientoPage() {
     <>
       <section className="relative isolate min-h-[520px] overflow-hidden border-b border-primary/15 md:min-h-[620px]">
         <Image
-          src="/images/contemplacion-04-acantilados.png"
-          alt="Paisaje abierto junto al mar"
+          src="/images/acompanamiento-acoger-la-vida.png"
+          alt="Manos sosteniendo flores al atardecer"
           fill
           priority
           sizes="100vw"

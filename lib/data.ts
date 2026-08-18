@@ -126,14 +126,14 @@ export const upcomingEvents: EventItem[] = [
     description: 'Encuentro mensual. Empieza el 1 de octubre. El primer jueves de cada mes, de 19:30 a 21:30. Compartir desde el Ser.',
     meta: 'Encuentro mensual · Primer jueves de mes · 19:30–21:30',
     price: 'Trimestre: 60 €',
-    image: '/images/REEMPLAZAR-experimento-rendicion.png',
+    image: '/images/evento-experimento-rendicion-octubre-2026.png',
   },
   {
     id: 'ev-2',
     title: 'Próximo retiro del Despertar',
-    description: 'Próximo retiro del Despertar en noviembre.',
-    meta: 'Retiro · Próximamente',
-    image: '/images/REEMPLAZAR-retiro-cabala-portada.png',
+    description: 'Conciencia y Ego · con Nuria Guinart y María Olid. Delta del Ebro · Hotel Carlos III, Alcanar · 14 y 15 de noviembre de 2026.',
+    meta: 'Retiro · 14 y 15 de noviembre de 2026',
+    image: '/images/evento-retiro-despertar-noviembre-2026.png',
   },
 ]
 

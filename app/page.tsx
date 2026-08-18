@@ -117,7 +117,7 @@ export default async function HomePage() {
                 alt="María Olid"
                 fill
                 sizes="(max-width: 1024px) 100vw, 40vw"
-                className="object-cover object-[66%_50%]"
+                className="object-cover object-center"
               />
             </div>
           </div>

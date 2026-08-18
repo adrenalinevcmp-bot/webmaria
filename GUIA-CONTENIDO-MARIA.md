@@ -1,94 +1,69 @@
-# Guía rápida para María · actualizar contenido
+# Guía rápida para actualizar la web de María Olid
 
-## 1. Cambiar el vídeo semanal / última entrevista
+Esta guía indica los lugares principales que María puede modificar sin tener que rediseñar la web.
 
-No tienes que tocar el código.
+## 1. Entrevistas
+Archivo principal: `lib/data.ts` y lógica automática en `lib/youtube.ts`.
 
-1. Sube el vídeo nuevo a YouTube.
-2. Añádelo a la playlist **ENTREVISTAS** del canal El Despertar.
-3. La web consulta esa playlist automáticamente y el vídeo más reciente pasa a ser:
-   - el vídeo destacado de la portada;
-   - la última entrevista de la página YouTube.
-4. El anterior pasa automáticamente a "Entrevista anterior".
+- La página `/youtube` está preparada para mostrar **Vídeos para profundizar** y **Entrevistas para el Despertar**.
+- Los vídeos fijos de “Vídeos para profundizar” se cambian en `DEEPENING_VIDEO_IDS` dentro de `lib/data.ts`.
+- Para cambiar uno, copia únicamente el ID de YouTube. Ejemplo: en `https://youtu.be/U03rxJJt5p4`, el ID es `U03rxJJt5p4`.
+- Las entrevistas pueden seleccionarse/ajustarse desde la fuente de YouTube configurada en `lib/youtube.ts`. Si María prefiere elegir solo entrevistas relevantes, conviene mantener una playlist específica de YouTube y usar esa playlist como fuente.
 
-La web revalida YouTube aproximadamente cada 15 minutos.
+## 2. Meditaciones
+Archivo: `lib/data.ts`.
 
-Playlist de entrevistas:
-`PL9HycyjrHAk0ljDioNSyUUI7YP7I-8-oI`
+- Castellano: lista `MEDITATION_ES_VIDEO_IDS`.
+- Catalán: lista `MEDITATION_CA_VIDEO_IDS`.
+- Añadir, quitar o reordenar un ID cambia el orden mostrado en la web.
 
-## 2. Elegir una entrevista atemporal
+## 3. Próximos eventos
+Archivo: `lib/data.ts`, bloque `upcomingEvents`.
 
-En Vercel abre:
+Cada evento contiene:
+- `title`: título.
+- `description`: descripción.
+- `meta`: fecha/tipo de evento.
+- `price`: precio, si corresponde.
+- `image`: imagen del evento.
 
-**Project → Settings → Environment Variables**
+Imágenes actuales:
+- Encuentro mensual: `public/images/evento-experimento-rendicion-octubre-2026.png`
+- Retiro: `public/images/evento-retiro-despertar-noviembre-2026.png`
 
-Añade o cambia:
+Para sustituir una imagen sin tocar código, se puede reemplazar el archivo conservando exactamente el mismo nombre.
 
-`TIMELESS_INTERVIEW_VIDEO_ID`
+> Nota: si existe la variable `EVENTS_JSON_URL` en Vercel, esa fuente externa tiene prioridad sobre los eventos escritos en `lib/data.ts`.
 
-Pon solo el ID del vídeo. Ejemplo: si el enlace es
-`https://youtu.be/ABCDEFGHIJK`, el ID es `ABCDEFGHIJK`.
+## 4. Acompañamiento
+Página: `app/acompanamiento/page.tsx`.
 
-Guarda y vuelve a desplegar la web.
+Imagen de cabecera:
+`public/images/acompanamiento-acoger-la-vida.png`
 
-## 3. Meditaciones
+Para cambiarla sin editar código, sustituir ese archivo conservando el nombre.
 
-Las meditaciones que aparecen ahora están fijadas por los enlaces enviados por María y en ese orden. Los IDs están en:
+Los textos largos de preguntas y respuestas están en `tutoriaFaq`, dentro de `lib/data.ts`.
 
-`lib/data.ts`
+## 5. Sobre María
+Página: `app/page.tsx`, sección `sobre-maria`.
 
-- `MEDITATION_ES_VIDEO_IDS`
-- `MEDITATION_CA_VIDEO_IDS`
+Imagen:
+`public/images/maria-sobre-bn.png`
 
-Para sustituir una, cambia únicamente el ID del vídeo.
+Está configurada con `object-center` para mantener a María centrada dentro del marco.
 
-## 4. Vídeos para profundizar
+## 6. Contemplar el ser que eres
+Archivo: `lib/data.ts`, bloque `galleryItems`.
 
-Los cinco vídeos están en:
+Las cinco imágenes están en `public/images/` con nombres `contemplacion-01...` a `contemplacion-05...`. Las frases se editan directamente en `galleryItems`.
 
-`lib/data.ts` → `DEEPENING_VIDEO_IDS`
+## 7. Contacto
+Revisar `app/contacto/page.tsx`, `components/contact-cta.tsx` y `components/site-footer.tsx` para correo, WhatsApp y redes.
 
-Para cambiar uno, sustituye solamente el ID manteniendo el orden.
+## 8. Publicar cambios en GitHub
+Después de guardar/reemplazar los archivos, abrir CMD en la carpeta del proyecto y ejecutar una sola línea:
 
-## 5. Audiolibro
+`git add . && git commit -m "Actualizar contenido web Maria Olid" && git push`
 
-Los capítulos se cargan automáticamente desde la playlist de audiolibros. La web elimina del texto visible la expresión "Voz de María Olid" cuando aparece en la descripción.
-
-## 6. Próximos eventos
-
-Mientras no se configure una fuente externa de eventos, los datos están en:
-
-`lib/data.ts` → `upcomingEvents`
-
-Imágenes fáciles de localizar:
-
-- `public/images/REEMPLAZAR-experimento-rendicion.png`
-- `public/images/REEMPLAZAR-retiro-cabala-portada.png`
-
-Para cambiar una imagen sin tocar código, reemplaza el archivo conservando exactamente el mismo nombre y extensión.
-
-## 7. Formularios de eventos y retiros
-
-El destinatario predeterminado es:
-
-`olid.maria@gmail.com`
-
-La opción recomendada es Resend mediante las variables de Vercel:
-
-- `RESEND_API_KEY`
-- `EMAIL_FROM`
-- `ADMIN_NOTIFICATION_EMAIL=olid.maria@gmail.com`
-
-Si Resend no está configurado, la web intenta usar FormSubmit. La primera vez FormSubmit puede enviar un correo de activación a María que debe aceptarse una vez.
-
-## 8. Contemplaciones
-
-Las cinco fotografías actuales son:
-
-- `contemplacion-01-muelle.png`
-- `contemplacion-02-olas.png`
-- `contemplacion-03-luz-agua.png`
-- `contemplacion-04-acantilados.png`
-- `contemplacion-05-mar-calmo.png`
-
-Las frases están en `lib/data.ts` → `galleryItems`.
+Vercel, si continúa conectado al repositorio, hará el despliegue automáticamente.
