@@ -1,34 +1,21 @@
 import Image from 'next/image'
 import Link from 'next/link'
-import { Play } from 'lucide-react'
 import { SectionHeading } from '@/components/section-heading'
 import { QuoteGallery } from '@/components/quote-gallery'
 import { EventCard } from '@/components/event-card'
 import { featuredVideo as fallbackVideo } from '@/lib/data'
 import { getUpcomingEvents } from '@/lib/events'
-import { getLatestChannelVideo } from '@/lib/youtube'
 import { ContactCta } from '@/components/contact-cta'
+import { LatestVideoButton, LatestVideoSection } from '@/components/latest-video'
 
 export const dynamic = 'force-dynamic'
 export const revalidate = 0
 const HERO_VIDEO_ID = 'jMi5r7K2DQM'
 
-function shortDescription(description: string) {
-  const marker = 'nuestra conexión con la vida'
-  const lower = description.toLowerCase()
-  const index = lower.indexOf(marker)
-  if (index >= 0) {
-    const end = index + marker.length
-    const cut = description.slice(0, end).trim()
-    return /[.!?]$/.test(cut) ? cut : `${cut}.`
-  }
-  return description
-}
 
 export default async function HomePage() {
-  // Consulta únicamente el canal público para evitar depender de playlists o variables externas.
-  const latestVideo = await getLatestChannelVideo()
-  const featuredVideo = latestVideo || fallbackVideo
+  // La UI del último vídeo consulta /api/youtube/latest directamente en el navegador.
+  // Así el botón, la miniatura y el título usan exactamente la misma fuente que el endpoint de diagnóstico.
   const upcomingEvents = await getUpcomingEvents()
 
   return (
@@ -42,14 +29,7 @@ export default async function HomePage() {
             Espiritualidad, conciencia y transformación interior. Una invitación a reconocer aquello que ya somos.
           </p>
           <div className="flex flex-wrap gap-4">
-            <a
-              href={featuredVideo.href}
-              target="_blank"
-              rel="noopener noreferrer"
-              className="inline-flex items-center gap-2 rounded-sm bg-primary px-6 py-3 text-xs font-semibold uppercase tracking-[0.2em] text-primary-foreground transition-opacity hover:opacity-90"
-            >
-              <Play className="h-4 w-4 fill-current" /> Ver último vídeo
-            </a>
+            <LatestVideoButton initial={fallbackVideo} />
             <Link
               href="/#sobre-maria"
               className="inline-flex items-center rounded-sm border border-primary/35 bg-background px-6 py-3 text-xs font-semibold uppercase tracking-[0.2em] text-foreground transition-colors hover:border-primary hover:text-primary"
@@ -72,42 +52,7 @@ export default async function HomePage() {
         </div>
       </section>
 
-      <section className="border-y border-primary/15 bg-secondary/75">
-        <div className="mx-auto grid max-w-6xl grid-cols-1 items-center gap-8 px-5 py-10 md:px-8 md:py-12 lg:grid-cols-[1.2fr_1fr]">
-          <a
-            href={featuredVideo.href}
-            target="_blank"
-            rel="noopener noreferrer"
-            className="group relative block aspect-video overflow-hidden rounded-sm bg-muted"
-            aria-label={`Ver vídeo: ${featuredVideo.title}`}
-          >
-            <Image
-              src={featuredVideo.thumbnail || '/placeholder.svg'}
-              alt={featuredVideo.title}
-              fill
-              sizes="(max-width: 1024px) 100vw, 60vw"
-              className="object-cover transition-transform duration-700 group-hover:scale-105"
-            />
-            <div className="absolute inset-0 bg-foreground/15 transition-colors group-hover:bg-foreground/25" />
-            <span className="absolute left-1/2 top-1/2 flex h-16 w-16 -translate-x-1/2 -translate-y-1/2 items-center justify-center rounded-full bg-background/90 text-primary shadow-sm transition-transform duration-300 group-hover:scale-110">
-              <Play className="h-6 w-6 translate-x-0.5 fill-current" />
-            </span>
-          </a>
-          <div className="flex flex-col gap-4">
-            <span className="text-xs uppercase tracking-[0.35em] text-primary">Último vídeo · {featuredVideo.date}</span>
-            <h2 className="font-serif text-3xl font-medium leading-tight text-foreground text-balance">{featuredVideo.title}</h2>
-            <p className="line-clamp-[10] text-base leading-relaxed text-foreground/75 text-pretty">
-              {shortDescription(featuredVideo.description)}
-            </p>
-            <Link
-              href="/youtube"
-              className="mt-2 inline-flex w-fit items-center rounded-sm bg-primary px-6 py-3 text-xs font-semibold uppercase tracking-[0.2em] text-primary-foreground transition-opacity hover:opacity-90"
-            >
-              Ver todas las entrevistas
-            </Link>
-          </div>
-        </div>
-      </section>
+      <LatestVideoSection initial={fallbackVideo} />
 
       <section id="sobre-maria" className="mx-auto max-w-6xl scroll-mt-24 px-5 py-14 md:px-8 md:py-18">
         <div className="grid grid-cols-1 gap-10 lg:grid-cols-[1fr_1.4fr] lg:gap-14">
