@@ -33,8 +33,7 @@ export default async function RetirosPage() {
         <section className="border-b border-primary/20 bg-secondary/70">
           <div className="mx-auto grid max-w-6xl grid-cols-1 items-center gap-10 px-5 py-12 md:px-8 md:py-14 lg:grid-cols-2">
             <div className="relative aspect-[4/3] overflow-hidden rounded-sm bg-muted">
-              <Image src="/images/REEMPLAZAR-experimento-rendicion.png" alt="Imagen de Experimento Rendición" fill sizes="(max-width: 1024px) 100vw, 50vw" className="object-cover" />
-              <span className="absolute bottom-3 left-3 rounded-sm bg-background/90 px-3 py-2 text-[10px] font-semibold uppercase tracking-wider">Reemplazar: Experimento Rendición</span>
+              <Image src="/images/evento-experimento-rendicion-octubre-2026.png" alt="Imagen de Experimento Rendición" fill sizes="(max-width: 1024px) 100vw, 50vw" className="object-cover" />
             </div>
             <div>
               <span className="text-xs font-semibold uppercase tracking-[0.35em] text-primary">Encuentro mensual</span>
@@ -50,8 +49,7 @@ export default async function RetirosPage() {
       <section className="border-b border-primary/20 bg-secondary/55">
         <div className="mx-auto grid max-w-6xl grid-cols-1 items-center gap-10 px-5 py-12 md:px-8 md:py-14 lg:grid-cols-2 lg:gap-16">
           <div className="relative aspect-[4/3] w-full overflow-hidden rounded-sm bg-muted">
-            <Image src="/images/REEMPLAZAR-retiro-cabala-portada.png" alt="Imagen del Retiro El Despertar sobre Cábala" fill priority sizes="(max-width: 1024px) 100vw, 50vw" className="object-cover object-center" />
-            <span className="absolute bottom-3 left-3 rounded-sm bg-background/90 px-3 py-2 text-[10px] font-semibold uppercase tracking-wider text-foreground">Reemplazar: retiro Cábala</span>
+            <Image src="/images/evento-retiro-despertar-noviembre-2026.png" alt="Imagen del Retiro El Despertar sobre Cábala" fill priority sizes="(max-width: 1024px) 100vw, 50vw" className="object-cover object-center" />
           </div>
           <div className="flex flex-col gap-5">
             <span className="text-xs font-semibold uppercase tracking-[0.35em] text-primary">Próximo retiro</span>
