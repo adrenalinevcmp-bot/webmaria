@@ -5,6 +5,7 @@ import { FaqAccordion } from '@/components/faq-accordion'
 import { SignupDialog } from '@/components/signup-dialog'
 import { tutoriaFaq } from '@/lib/data'
 import { ContactCta } from '@/components/contact-cta'
+import { getCms } from '@/lib/cms'
 
 export const metadata: Metadata = {
   title: 'Acompañamiento · El Despertar',
@@ -17,12 +18,13 @@ const details = [
   { icon: Euro, label: 'Precio: 50 €' },
 ]
 
-export default function AcompanamientoPage() {
+export default async function AcompanamientoPage() {
+  const cfg = await getCms('acompanamiento.page', {image:'/images/acompanamiento-acoger-la-vida.png', quote:'“Acoger la Vida, acompañando la vida”', author:'María Olid', subtitle:'Un espacio de acompañamiento espiritual y claridad interior para la vida diaria.', ctaTitle:'¿Sientes el llamado a mirar dentro?', ctaText:'Solicita un espacio de acompañamiento individual y nos pondremos en contacto contigo para coordinarlo.'})
   return (
     <>
       <section className="relative isolate min-h-[520px] overflow-hidden border-b border-primary/15 md:min-h-[620px]">
         <Image
-          src="/images/acompanamiento-acoger-la-vida.png"
+          src={cfg.image}
           alt="Manos sosteniendo flores al atardecer"
           fill
           priority
@@ -32,10 +34,10 @@ export default function AcompanamientoPage() {
         <div className="absolute inset-0 bg-foreground/35" />
         <div className="relative mx-auto flex min-h-[520px] max-w-6xl items-center px-5 py-16 md:min-h-[620px] md:px-8">
           <div className="max-w-3xl text-background drop-shadow-sm">
-            <p className="font-serif text-4xl font-medium leading-tight md:text-6xl">“Acoger la Vida, acompañando la vida”</p>
-            <p className="mt-4 font-serif text-2xl italic md:text-3xl">María Olid</p>
+            <p className="font-serif text-4xl font-medium leading-tight md:text-6xl">{cfg.quote}</p>
+            <p className="mt-4 font-serif text-2xl italic md:text-3xl">{cfg.author}</p>
             <p className="mt-8 max-w-2xl text-lg leading-relaxed text-background/95 md:text-xl">
-              Un espacio de acompañamiento espiritual y claridad interior para la vida diaria.
+              {cfg.subtitle}
             </p>
           </div>
         </div>
@@ -58,8 +60,8 @@ export default function AcompanamientoPage() {
 
       <section className="border-t border-primary/15 bg-secondary/70">
         <div className="mx-auto flex max-w-3xl flex-col items-center gap-6 px-5 py-14 text-center md:px-8 md:py-16">
-          <h2 className="font-serif text-3xl font-medium leading-tight text-foreground text-balance md:text-4xl">¿Sientes el llamado a mirar dentro?</h2>
-          <p className="max-w-xl text-base leading-relaxed text-foreground/75 text-pretty">Solicita un espacio de acompañamiento individual y nos pondremos en contacto contigo para coordinarlo.</p>
+          <h2 className="font-serif text-3xl font-medium leading-tight text-foreground text-balance md:text-4xl">{cfg.ctaTitle}</h2>
+          <p className="max-w-xl text-base leading-relaxed text-foreground/75 text-pretty">{cfg.ctaText}</p>
           <SignupDialog trigger="Solicitar una sesión" title="Solicitar una sesión" subtitle="Déjanos tus datos y te contactaremos para coordinar tu consulta individual." />
         </div>
       </section>

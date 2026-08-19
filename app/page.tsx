@@ -19,7 +19,7 @@ export default async function HomePage() {
   // Así el botón, la miniatura y el título usan exactamente la misma fuente que el endpoint de diagnóstico.
   const upcomingEvents = await getUpcomingEvents()
   const hero = await getCms('home.hero', {title:'El sentido de la vida se encuentra sirviendo a la vida', subtitle:'Espiritualidad, conciencia y transformación interior. Una invitación a reconocer aquello que ya somos.'})
-  const sobre = await getCms('sobre.maria', {title:'La vida es un despertar', image:'/images/maria-sobre-bn.png'})
+  const sobre = await getCms('sobre.maria', {title:'La vida es un despertar', image:'/images/maria-sobre-bn.png', text:'La vida es un despertar. Seamos todos bienvenidos al despertar.\n\nY podemos decirlo sin miedo a equivocarnos: todos estamos sujetos a infinitos despertares al Ser que somos, visto desde esta experiencia procesal llamada vida.\n\nTodo movimiento que toma nuestra vida nos lleva a asumir más amor. Cada cambio es una oportunidad para amar y para amarnos.\n\nAhora puedo decir que el camino del espíritu es un camino de Amor. No necesitas un gurú, o un maestro iluminado; el despertar ya está siendo y sucediendo en ti.\n\nEs la vida misma la que se está ocupando de tu despertar. Poco tienes que hacer. La vida misma te convoca, una y otra vez, a ser la vida que eres.\n\nMi proceso de despertar me ha traído hasta aquí: comunicar lo que somos es dar lo que recibes. Porque nada es para ti, eres canal para la vida. Eres vida.'})
 
   return (
     <>
@@ -66,19 +66,14 @@ export default async function HomePage() {
                 alt="María Olid"
                 fill
                 sizes="(max-width: 1024px) 100vw, 40vw"
-                className="object-cover object-center"
+                className="object-contain object-center"
               />
             </div>
           </div>
           <div className="flex flex-col gap-6">
             <h2 className="font-serif text-3xl font-medium leading-tight text-foreground md:text-4xl">{sobre.title}</h2>
             <div className="flex flex-col gap-4 text-[1.05rem] leading-[1.8] text-muted-foreground text-pretty md:text-lg">
-              <p>La vida es un despertar. Seamos todos bienvenidos al despertar.</p>
-              <p>Y podemos decirlo sin miedo a equivocarnos: todos estamos sujetos a infinitos despertares al Ser que somos, visto desde esta experiencia procesal llamada vida.</p>
-              <p>Todo movimiento que toma nuestra vida nos lleva a asumir más amor. Cada cambio es una oportunidad para amar y para amarnos.</p>
-              <p>Ahora puedo decir que el camino del espíritu es un camino de Amor. No necesitas un gurú, o un maestro iluminado; el despertar ya está siendo y sucediendo en ti.</p>
-              <p>Es la vida misma la que se está ocupando de tu despertar. Poco tienes que hacer. La vida misma te convoca, una y otra vez, a ser la vida que eres.</p>
-              <p>Mi proceso de despertar me ha traído hasta aquí: comunicar lo que somos es dar lo que recibes. Porque nada es para ti, eres canal para la vida. Eres vida.</p>
+              {sobre.text.split(/\n\n+/).map((paragraph:string, index:number) => <p key={index}>{paragraph}</p>)}
               <p className="pt-2 font-serif text-2xl italic text-foreground">María Olid</p>
             </div>
           </div>

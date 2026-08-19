@@ -11,6 +11,7 @@ import {
   type Meditation,
 } from '@/lib/data'
 import { getYoutubeContent, getYoutubeVideosByIds } from '@/lib/youtube'
+import { getCms } from '@/lib/cms'
 
 export const metadata: Metadata = {
   title: 'Meditaciones y audiolibro · El Despertar',
@@ -39,10 +40,11 @@ function cleanAudiobookDescription(value: string) {
 }
 
 export default async function MeditacionesPage() {
+  const cfg = await getCms('meditaciones.page', {title:'Meditamos para despertar', intro:'Meditar es una forma de vivir. No meditamos para relajarnos o para no pensar, meditamos para despertar. Meditamos para contemplar qué sucede en nuestra mente y ser observadores de ello. Podemos observar los pensamientos sin involucrarnos. Podemos abrirnos a la distancia que hay entre tus pensamientos y tu ser.', image:'/images/maria-meditaciones-primer-plano.jpg', esIds:MEDITATION_ES_VIDEO_IDS, caIds:MEDITATION_CA_VIDEO_IDS, esTitle:'Meditaciones en castellano', caTitle:'Meditaciones en catalán', audiobookTitle:'Audiolibro'})
   const data = await getYoutubeContent()
   const [fixedEs, fixedCa] = await Promise.all([
-    getYoutubeVideosByIds(MEDITATION_ES_VIDEO_IDS),
-    getYoutubeVideosByIds(MEDITATION_CA_VIDEO_IDS),
+    getYoutubeVideosByIds(cfg.esIds || MEDITATION_ES_VIDEO_IDS),
+    getYoutubeVideosByIds(cfg.caIds || MEDITATION_CA_VIDEO_IDS),
   ])
   const es = fixedEs.length ? fixedEs.map(toMeditation) : fallbackEs
   const ca = fixedCa.length ? fixedCa.map(toMeditation) : fallbackCa
@@ -57,7 +59,7 @@ export default async function MeditacionesPage() {
         <div className="mx-auto grid max-w-6xl grid-cols-1 items-center gap-9 px-5 py-8 md:px-8 md:py-10 lg:grid-cols-[0.95fr_1.05fr] lg:gap-14">
           <div className="relative mx-auto aspect-[4/5] w-full max-w-[520px] overflow-hidden rounded-sm bg-background/40 shadow-sm">
             <Image
-              src="/images/maria-meditaciones-primer-plano.jpg"
+              src={cfg.image}
               alt="María Olid con los ojos cerrados"
               fill
               priority
@@ -66,16 +68,16 @@ export default async function MeditacionesPage() {
             />
           </div>
           <div className="flex flex-col gap-5">
-            <h1 className="font-serif text-4xl font-medium leading-tight text-foreground md:text-5xl">Meditamos para despertar</h1>
+            <h1 className="font-serif text-4xl font-medium leading-tight text-foreground md:text-5xl">{cfg.title}</h1>
             <p className="text-[1.05rem] leading-[1.8] text-foreground/75 text-pretty md:text-lg">
-              Meditar es una forma de vivir. No meditamos para relajarnos o para no pensar, meditamos para despertar. Meditamos para contemplar qué sucede en nuestra mente y ser observadores de ello. Podemos observar los pensamientos sin involucrarnos. Podemos abrirnos a la distancia que hay entre tus pensamientos y tu ser.
+              {cfg.intro}
             </p>
           </div>
         </div>
       </section>
 
       <section className="mx-auto max-w-6xl px-5 py-14 md:px-8 md:py-16">
-        <SectionHeading eyebrow="Meditaciones guiadas" title="Meditaciones en castellano" className="mb-10" />
+        <SectionHeading eyebrow="Meditaciones guiadas" title={cfg.esTitle} className="mb-10" />
         <div className="grid grid-cols-1 gap-6 sm:grid-cols-2 lg:grid-cols-3">
           {es.map((m) => <MeditationCard key={m.id} meditation={m} />)}
         </div>
@@ -83,7 +85,7 @@ export default async function MeditacionesPage() {
 
       <section className="border-t border-primary/15 bg-secondary/60">
         <div className="mx-auto max-w-6xl px-5 py-14 md:px-8 md:py-16">
-          <SectionHeading eyebrow="Meditaciones guiadas" title="Meditaciones en catalán" className="mb-10" />
+          <SectionHeading eyebrow="Meditaciones guiadas" title={cfg.caTitle} className="mb-10" />
           <div className="grid grid-cols-1 gap-6 sm:grid-cols-2 lg:grid-cols-3">
             {ca.map((m) => <MeditationCard key={m.id} meditation={m} />)}
           </div>
@@ -92,7 +94,7 @@ export default async function MeditacionesPage() {
 
       <section className="border-t border-primary/15">
         <div className="mx-auto max-w-6xl px-5 py-14 md:px-8 md:py-16">
-          <SectionHeading eyebrow="UN CURSO DE MILAGROS" title="Audiolibro" className="mb-10" />
+          <SectionHeading eyebrow="UN CURSO DE MILAGROS" title={cfg.audiobookTitle} className="mb-10" />
           {audiobooks.length ? (
             <div className="grid grid-cols-1 gap-6 sm:grid-cols-2 lg:grid-cols-3">
               {audiobooks.map((m) => <MeditationCard key={m.id} meditation={m} />)}
