@@ -19,6 +19,14 @@ export default async function HomePage() {
   // Así el botón, la miniatura y el título usan exactamente la misma fuente que el endpoint de diagnóstico.
   const upcomingEvents = await getUpcomingEvents()
   const hero = await getCms('home.hero', {title:'El sentido de la vida se encuentra sirviendo a la vida', subtitle:'Espiritualidad, conciencia y transformación interior. Una invitación a reconocer aquello que ya somos.'})
+  const homeSections = await getCms('home.sections', {latestButton:'Ver último vídeo', aboutButton:'Conoce a María', eventsEyebrow:'Agenda', eventsTitle:'Próximos eventos', contemplationEyebrow:'Contemplar el ser que eres', contemplationTitle:'Palabras para el despertar', heroVideoId:'jMi5r7K2DQM'})
+  const gallery = await getCms('home.gallery', [
+    {image:'/images/contemplacion-01-muelle.png',quote:'Contemplar es dejar de buscar fuera lo que siempre ha estado dentro.'},
+    {image:'/images/contemplacion-02-olas.png',quote:'La vida no pide ser controlada, sino plenamente vivida.'},
+    {image:'/images/contemplacion-03-luz-agua.png',quote:'Cuando la mente se aquieta, el Ser se reconoce a sí mismo.'},
+    {image:'/images/contemplacion-04-acantilados.png',quote:'Cada instante puede ser una puerta al despertar.'},
+    {image:'/images/contemplacion-05-mar-calmo.png',quote:'La paz no llega de fuera. Es lo que queda cuando dejamos de resistir.'}
+  ])
   const sobre = await getCms('sobre.maria', {title:'La vida es un despertar', image:'/images/maria-sobre-bn.png', text:'La vida es un despertar. Seamos todos bienvenidos al despertar.\n\nY podemos decirlo sin miedo a equivocarnos: todos estamos sujetos a infinitos despertares al Ser que somos, visto desde esta experiencia procesal llamada vida.\n\nTodo movimiento que toma nuestra vida nos lleva a asumir más amor. Cada cambio es una oportunidad para amar y para amarnos.\n\nAhora puedo decir que el camino del espíritu es un camino de Amor. No necesitas un gurú, o un maestro iluminado; el despertar ya está siendo y sucediendo en ti.\n\nEs la vida misma la que se está ocupando de tu despertar. Poco tienes que hacer. La vida misma te convoca, una y otra vez, a ser la vida que eres.\n\nMi proceso de despertar me ha traído hasta aquí: comunicar lo que somos es dar lo que recibes. Porque nada es para ti, eres canal para la vida. Eres vida.'})
 
   return (
@@ -37,7 +45,7 @@ export default async function HomePage() {
               href="/#sobre-maria"
               className="inline-flex items-center rounded-sm border border-primary/35 bg-background px-6 py-3 text-xs font-semibold uppercase tracking-[0.2em] text-foreground transition-colors hover:border-primary hover:text-primary"
             >
-              Conoce a María
+              {homeSections.aboutButton}
             </Link>
           </div>
         </div>
@@ -46,7 +54,7 @@ export default async function HomePage() {
           <div className="aspect-video w-full">
             <iframe
               className="h-full w-full"
-              src={`https://www.youtube-nocookie.com/embed/${HERO_VIDEO_ID}?rel=0`}
+              src={`https://www.youtube-nocookie.com/embed/${homeSections.heroVideoId || HERO_VIDEO_ID}?rel=0`}
               title="María Olid · El Despertar"
               allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture; web-share"
               allowFullScreen
@@ -82,7 +90,7 @@ export default async function HomePage() {
 
       <section className="border-t border-primary/15 bg-secondary/75">
         <div className="mx-auto max-w-6xl px-5 py-14 md:px-8 md:py-18">
-          <SectionHeading eyebrow="Agenda" title="Próximos eventos" align="center" className="mb-10" />
+          <SectionHeading eyebrow={homeSections.eventsEyebrow} title={homeSections.eventsTitle} align="center" className="mb-10" />
           <div className="grid grid-cols-1 gap-7 md:grid-cols-2">
             {upcomingEvents.map((event) => <EventCard key={event.id} event={event} />)}
           </div>
@@ -90,8 +98,8 @@ export default async function HomePage() {
       </section>
 
       <section className="mx-auto max-w-6xl px-5 py-14 md:px-8 md:py-18">
-        <SectionHeading eyebrow="Contemplar el ser que eres" title="Palabras para el despertar" align="center" className="mb-10" />
-        <QuoteGallery />
+        <SectionHeading eyebrow={homeSections.contemplationEyebrow} title={homeSections.contemplationTitle} align="center" className="mb-10" />
+        <QuoteGallery items={gallery} />
       </section>
       <ContactCta />
     </>

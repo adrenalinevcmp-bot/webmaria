@@ -40,7 +40,7 @@ function cleanAudiobookDescription(value: string) {
 }
 
 export default async function MeditacionesPage() {
-  const cfg = await getCms('meditaciones.page', {title:'Meditamos para despertar', intro:'Meditar es una forma de vivir. No meditamos para relajarnos o para no pensar, meditamos para despertar. Meditamos para contemplar qué sucede en nuestra mente y ser observadores de ello. Podemos observar los pensamientos sin involucrarnos. Podemos abrirnos a la distancia que hay entre tus pensamientos y tu ser.', image:'/images/maria-meditaciones-primer-plano.jpg', esIds:MEDITATION_ES_VIDEO_IDS, caIds:MEDITATION_CA_VIDEO_IDS, esTitle:'Meditaciones en castellano', caTitle:'Meditaciones en catalán', audiobookTitle:'Audiolibro'})
+  const cfg = await getCms('meditaciones.page', {title:'Meditamos para despertar', intro:'Meditar es una forma de vivir. No meditamos para relajarnos o para no pensar, meditamos para despertar. Meditamos para contemplar qué sucede en nuestra mente y ser observadores de ello. Podemos observar los pensamientos sin involucrarnos. Podemos abrirnos a la distancia que hay entre tus pensamientos y tu ser.', image:'/images/maria-meditaciones-primer-plano.jpg', esIds:MEDITATION_ES_VIDEO_IDS, caIds:MEDITATION_CA_VIDEO_IDS, esTitle:'Meditaciones en castellano', caTitle:'Meditaciones en catalán', audiobookTitle:'Audiolibro', guidedLabel:'Meditaciones guiadas', audiobookEyebrow:'UN CURSO DE MILAGROS'})
   const data = await getYoutubeContent()
   const [fixedEs, fixedCa] = await Promise.all([
     getYoutubeVideosByIds(cfg.esIds || MEDITATION_ES_VIDEO_IDS),
@@ -77,7 +77,7 @@ export default async function MeditacionesPage() {
       </section>
 
       <section className="mx-auto max-w-6xl px-5 py-14 md:px-8 md:py-16">
-        <SectionHeading eyebrow="Meditaciones guiadas" title={cfg.esTitle} className="mb-10" />
+        <SectionHeading eyebrow={cfg.guidedLabel} title={cfg.esTitle} className="mb-10" />
         <div className="grid grid-cols-1 gap-6 sm:grid-cols-2 lg:grid-cols-3">
           {es.map((m) => <MeditationCard key={m.id} meditation={m} />)}
         </div>
@@ -85,7 +85,7 @@ export default async function MeditacionesPage() {
 
       <section className="border-t border-primary/15 bg-secondary/60">
         <div className="mx-auto max-w-6xl px-5 py-14 md:px-8 md:py-16">
-          <SectionHeading eyebrow="Meditaciones guiadas" title={cfg.caTitle} className="mb-10" />
+          <SectionHeading eyebrow={cfg.guidedLabel} title={cfg.caTitle} className="mb-10" />
           <div className="grid grid-cols-1 gap-6 sm:grid-cols-2 lg:grid-cols-3">
             {ca.map((m) => <MeditationCard key={m.id} meditation={m} />)}
           </div>
@@ -94,7 +94,7 @@ export default async function MeditacionesPage() {
 
       <section className="border-t border-primary/15">
         <div className="mx-auto max-w-6xl px-5 py-14 md:px-8 md:py-16">
-          <SectionHeading eyebrow="UN CURSO DE MILAGROS" title={cfg.audiobookTitle} className="mb-10" />
+          <SectionHeading eyebrow={cfg.audiobookEyebrow} title={cfg.audiobookTitle} className="mb-10" />
           {audiobooks.length ? (
             <div className="grid grid-cols-1 gap-6 sm:grid-cols-2 lg:grid-cols-3">
               {audiobooks.map((m) => <MeditationCard key={m.id} meditation={m} />)}

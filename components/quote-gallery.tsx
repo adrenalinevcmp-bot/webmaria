@@ -3,9 +3,10 @@
 import { useState } from 'react'
 import Image from 'next/image'
 import { ChevronLeft, ChevronRight } from 'lucide-react'
-import { galleryItems } from '@/lib/data'
+import { galleryItems as fallbackItems } from '@/lib/data'
 
-export function QuoteGallery() {
+export function QuoteGallery({ items = fallbackItems }: { items?: { image:string; quote:string }[] }) {
+  const galleryItems = items?.length ? items : fallbackItems
   const [index, setIndex] = useState(0)
   const item = galleryItems[index]
 

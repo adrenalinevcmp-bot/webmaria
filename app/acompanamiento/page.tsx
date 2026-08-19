@@ -19,7 +19,9 @@ const details = [
 ]
 
 export default async function AcompanamientoPage() {
-  const cfg = await getCms('acompanamiento.page', {image:'/images/acompanamiento-acoger-la-vida.png', quote:'“Acoger la Vida, acompañando la vida”', author:'María Olid', subtitle:'Un espacio de acompañamiento espiritual y claridad interior para la vida diaria.', ctaTitle:'¿Sientes el llamado a mirar dentro?', ctaText:'Solicita un espacio de acompañamiento individual y nos pondremos en contacto contigo para coordinarlo.'})
+  const cfg = await getCms('acompanamiento.page', {details:['Consulta online por Zoom','Duración de 60 a 75 minutos','Precio: 50 €'], faq:tutoriaFaq, image:'/images/acompanamiento-acoger-la-vida.png', quote:'“Acoger la Vida, acompañando la vida”', author:'María Olid', subtitle:'Un espacio de acompañamiento espiritual y claridad interior para la vida diaria.', ctaTitle:'¿Sientes el llamado a mirar dentro?', ctaText:'Solicita un espacio de acompañamiento individual y nos pondremos en contacto contigo para coordinarlo.'})
+  const detailLabels = cfg.details || details.map(d=>d.label)
+  const faqItems = cfg.faq || tutoriaFaq
   return (
     <>
       <section className="relative isolate min-h-[520px] overflow-hidden border-b border-primary/15 md:min-h-[620px]">
@@ -45,17 +47,17 @@ export default async function AcompanamientoPage() {
 
       <section className="mx-auto max-w-4xl px-5 py-12 md:px-8 md:py-14">
         <div className="grid grid-cols-1 gap-4 sm:grid-cols-3">
-          {details.map((d) => (
+          {details.map((d, i) => (
             <div key={d.label} className="flex flex-col items-center gap-3 rounded-sm border border-primary/15 bg-card px-6 py-8 text-center">
               <d.icon className="h-6 w-6 text-primary" />
-              <span className="text-sm leading-relaxed text-foreground text-pretty">{d.label}</span>
+              <span className="text-sm leading-relaxed text-foreground text-pretty">{detailLabels[i] || d.label}</span>
             </div>
           ))}
         </div>
       </section>
 
       <section className="mx-auto max-w-3xl px-5 pb-14 md:px-8 md:pb-16">
-        <FaqAccordion items={tutoriaFaq} />
+        <FaqAccordion items={faqItems} />
       </section>
 
       <section className="border-t border-primary/15 bg-secondary/70">
