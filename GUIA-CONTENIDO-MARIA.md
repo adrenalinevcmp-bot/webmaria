@@ -67,3 +67,9 @@ Después de guardar/reemplazar los archivos, abrir CMD en la carpeta del proyect
 `git add . && git commit -m "Actualizar contenido web Maria Olid" && git push`
 
 Vercel, si continúa conectado al repositorio, hará el despliegue automáticamente.
+
+## Panel privado de gestión
+Ruta oculta: `/gestion-maria` (no aparece en el menú público).
+Correos autorizados: `adrenalinevcmp@gmail.com` y `olid.maria@gmail.com`.
+La primera vez, pulsa **Crear mi acceso por primera vez**, define una contraseña y confirma el correo si se solicita. Después usa **Entrar**.
+El panel permite editar portada, Sobre María, contacto, subir imágenes persistentes y crear bloques avanzados de contenido. Los cambios de portada y Sobre María se leen desde la base de datos sin tener que hacer git push.

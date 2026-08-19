@@ -7,6 +7,7 @@ import { featuredVideo as fallbackVideo } from '@/lib/data'
 import { getUpcomingEvents } from '@/lib/events'
 import { ContactCta } from '@/components/contact-cta'
 import { LatestVideoButton, LatestVideoSection } from '@/components/latest-video'
+import { getCms } from '@/lib/cms'
 
 export const dynamic = 'force-dynamic'
 export const revalidate = 0
@@ -17,16 +18,18 @@ export default async function HomePage() {
   // La UI del último vídeo consulta /api/youtube/latest directamente en el navegador.
   // Así el botón, la miniatura y el título usan exactamente la misma fuente que el endpoint de diagnóstico.
   const upcomingEvents = await getUpcomingEvents()
+  const hero = await getCms('home.hero', {title:'El sentido de la vida se encuentra sirviendo a la vida', subtitle:'Espiritualidad, conciencia y transformación interior. Una invitación a reconocer aquello que ya somos.'})
+  const sobre = await getCms('sobre.maria', {title:'La vida es un despertar', image:'/images/maria-sobre-bn.png'})
 
   return (
     <>
       <section className="mx-auto grid max-w-6xl grid-cols-1 items-center gap-8 px-5 pb-10 pt-6 md:px-8 md:pb-14 md:pt-8 lg:grid-cols-[0.92fr_1.08fr] lg:gap-12">
         <div className="flex flex-col gap-6">
           <h1 className="font-serif text-4xl font-medium leading-[1.06] text-foreground text-balance md:text-5xl lg:text-6xl">
-            El sentido de la vida se encuentra sirviendo a la vida
+            {hero.title}
           </h1>
           <p className="max-w-md text-[1.05rem] leading-relaxed text-foreground/75 text-pretty">
-            Espiritualidad, conciencia y transformación interior. Una invitación a reconocer aquello que ya somos.
+            {hero.subtitle}
           </p>
           <div className="flex flex-wrap gap-4">
             <LatestVideoButton initial={fallbackVideo} />
@@ -59,7 +62,7 @@ export default async function HomePage() {
           <div className="relative">
             <div className="relative aspect-[4/5] w-full overflow-hidden rounded-sm bg-muted lg:sticky lg:top-24">
               <Image
-                src="/images/maria-sobre-bn.png"
+                src={sobre.image}
                 alt="María Olid"
                 fill
                 sizes="(max-width: 1024px) 100vw, 40vw"
@@ -68,7 +71,7 @@ export default async function HomePage() {
             </div>
           </div>
           <div className="flex flex-col gap-6">
-            <h2 className="font-serif text-3xl font-medium leading-tight text-foreground md:text-4xl">La vida es un despertar</h2>
+            <h2 className="font-serif text-3xl font-medium leading-tight text-foreground md:text-4xl">{sobre.title}</h2>
             <div className="flex flex-col gap-4 text-[1.05rem] leading-[1.8] text-muted-foreground text-pretty md:text-lg">
               <p>La vida es un despertar. Seamos todos bienvenidos al despertar.</p>
               <p>Y podemos decirlo sin miedo a equivocarnos: todos estamos sujetos a infinitos despertares al Ser que somos, visto desde esta experiencia procesal llamada vida.</p>
