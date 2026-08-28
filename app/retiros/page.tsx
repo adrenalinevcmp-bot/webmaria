@@ -19,8 +19,10 @@ export default async function RetirosPage() {
   const upcomingEvents = await getUpcomingEvents()
   const youtube = await getYoutubeContent()
   const retreatVideo = youtube.retreats?.[0]
-  const rendicion = upcomingEvents.find((event) => event.title.toLowerCase().includes('rendición'))
-  const retreatEvent = upcomingEvents.find((event) => event.id !== rendicion?.id)
+  // Identificamos el encuentro mensual por su ID para que los cambios de título
+  // desde el panel no hagan desaparecer ninguno de los dos eventos.
+  const rendicion = upcomingEvents.find((event) => event.id === 'ev-1') ?? upcomingEvents[0]
+  const retreatEvent = upcomingEvents.find((event) => event.id === 'ev-2') ?? upcomingEvents.find((event) => event.id !== rendicion?.id)
 
   return (
     <>
