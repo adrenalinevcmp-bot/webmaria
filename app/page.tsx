@@ -92,8 +92,43 @@ export default async function HomePage() {
       <section className="border-t border-primary/15 bg-secondary/75">
         <div className="mx-auto max-w-6xl px-5 py-14 md:px-8 md:py-18">
           <SectionHeading eyebrow={homeSections.eventsEyebrow} title={homeSections.eventsTitle} align="center" className="mb-10" />
-          <div className="grid grid-cols-1 gap-8">
-            {upcomingEvents.map((event) => <EventCard key={event.id} event={event} />)}
+          <div className="space-y-0">
+            {upcomingEvents.map((event, index) => (
+              <section
+                key={event.id}
+                className={index === 0
+                  ? "border-b border-primary/20 bg-secondary/70"
+                  : "border-b border-primary/20 bg-secondary/55"}
+              >
+                <div className="grid grid-cols-1 items-center gap-10 py-12 lg:grid-cols-2 lg:gap-16">
+                  <div className="relative aspect-[4/3] w-full overflow-hidden rounded-sm bg-muted">
+                    <Image
+                      src={event.image || (event.id === 'ev-1' ? '/images/evento-experimento-rendicion-octubre-2026.png' : '/images/evento-retiro-despertar-noviembre-2026.png')}
+                      alt={event.title}
+                      fill
+                      sizes="(max-width: 1024px) 100vw, 50vw"
+                      className="object-cover object-center"
+                    />
+                  </div>
+                  <div className="flex flex-col gap-5">
+                    <span className="text-xs font-semibold uppercase tracking-[0.35em] text-primary">
+                      {event.id === 'ev-1' ? 'Encuentro mensual' : 'Próximo retiro'}
+                    </span>
+                    <h3 className="font-serif text-3xl font-medium leading-tight text-foreground md:text-4xl">
+                      {event.title}
+                    </h3>
+                    <RichText text={event.description} className="space-y-3 text-base leading-relaxed text-foreground/75" />
+                    {event.price && <p className="font-medium text-foreground">{event.price}</p>}
+                    <Link
+                      href="/retiros"
+                      className="inline-flex w-fit items-center rounded-sm border border-primary/35 bg-background px-6 py-3 text-xs font-semibold uppercase tracking-[0.2em] text-foreground transition-colors hover:border-primary hover:text-primary"
+                    >
+                      Ver más información
+                    </Link>
+                  </div>
+                </div>
+              </section>
+            ))}
           </div>
         </div>
       </section>
