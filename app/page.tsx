@@ -8,6 +8,7 @@ import { getUpcomingEvents } from '@/lib/events'
 import { ContactCta } from '@/components/contact-cta'
 import { LatestVideoButton, LatestVideoSection } from '@/components/latest-video'
 import { getCms } from '@/lib/cms'
+import { RichText } from '@/components/rich-text'
 
 export const dynamic = 'force-dynamic'
 export const revalidate = 0
@@ -81,7 +82,7 @@ export default async function HomePage() {
           <div className="flex flex-col gap-6">
             <h2 className="font-serif text-3xl font-medium leading-tight text-foreground md:text-4xl">{sobre.title}</h2>
             <div className="flex flex-col gap-4 text-[1.05rem] leading-[1.8] text-muted-foreground text-pretty md:text-lg">
-              {sobre.text.split(/\n\n+/).map((paragraph:string, index:number) => <p key={index}>{paragraph}</p>)}
+              <RichText text={sobre.text} className="contents" />
               <p className="pt-2 font-serif text-2xl italic text-foreground">María Olid</p>
             </div>
           </div>

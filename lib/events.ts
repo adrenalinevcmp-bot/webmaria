@@ -2,6 +2,8 @@ import { upcomingEvents as fallbackEvents, type EventItem } from './data'
 import { getCms } from './cms'
 export async function getUpcomingEvents(): Promise<EventItem[]> {
   const cmsEvents = await getCms<EventItem[]>('agenda.events', fallbackEvents)
+  // El panel privado es la fuente principal. Esto evita que una fuente externa antigua o incompleta oculte eventos creados desde /gestion-maria.
+  if (Array.isArray(cmsEvents) && cmsEvents.length > 0) return cmsEvents
   const url = process.env.EVENTS_JSON_URL
   if (!url) return cmsEvents
   try {

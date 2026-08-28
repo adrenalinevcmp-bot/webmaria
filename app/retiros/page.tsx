@@ -7,6 +7,7 @@ import { getYoutubeContent } from '@/lib/youtube'
 import { ContactCta } from '@/components/contact-cta'
 import { VideoCard } from '@/components/video-card'
 import { getCms } from '@/lib/cms'
+import { RichText } from '@/components/rich-text'
 
 export const metadata: Metadata = {
   title: 'Agenda · El Despertar',
@@ -40,7 +41,7 @@ export default async function RetirosPage() {
             <div>
               <span className="text-xs font-semibold uppercase tracking-[0.35em] text-primary">{cfg.monthlyLabel}</span>
               <h2 className="mt-4 font-serif text-3xl text-foreground md:text-4xl">{rendicion.title}</h2>
-              <p className="mt-5 leading-relaxed text-foreground/75">{rendicion.description}</p>
+              <RichText text={rendicion.description} className="mt-5 space-y-3 leading-relaxed text-foreground/75" />
               {rendicion.price && <p className="mt-3 font-medium text-foreground">{rendicion.price}</p>}
               <div className="mt-6"><SignupDialog trigger={cfg.signupButton} title={rendicion.title} subtitle={cfg.monthlyFormText} /></div>
             </div>
@@ -56,7 +57,7 @@ export default async function RetirosPage() {
           <div className="flex flex-col gap-5">
             <span className="text-xs font-semibold uppercase tracking-[0.35em] text-primary">{cfg.retreatLabel}</span>
             <h2 className="font-serif text-3xl font-medium leading-tight text-foreground md:text-4xl">{retreatEvent?.title || 'Retiro El Despertar sobre Cábala'}</h2>
-            <p className="text-base leading-relaxed text-foreground/75">{retreatEvent?.description || 'Aquí se incorporará el texto y el vídeo cuando estén disponibles.'}</p>
+            <RichText text={retreatEvent?.description || 'Aquí se incorporará el texto y el vídeo cuando estén disponibles.'} className="space-y-3 text-base leading-relaxed text-foreground/75" />
             <SignupDialog trigger={cfg.signupButton} title={retreatEvent?.title || 'Retiro El Despertar sobre Cábala'} subtitle={cfg.retreatFormText} className="self-start" />
           </div>
         </div>
