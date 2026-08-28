@@ -8,7 +8,7 @@ export const NAV_LINKS = [
 ]
 
 export const SOCIAL_LINKS = {
-  instagram: process.env.NEXT_PUBLIC_INSTAGRAM_URL || 'https://instagram.com',
+  instagram: 'https://www.instagram.com/maria_olid_/',
   youtube: 'https://www.youtube.com/@mariaolid',
 }
 

@@ -2,8 +2,13 @@ import { upcomingEvents as fallbackEvents, type EventItem } from './data'
 import { getCms } from './cms'
 export async function getUpcomingEvents(): Promise<EventItem[]> {
   const cmsEvents = await getCms<EventItem[]>('agenda.events', fallbackEvents)
-  // El panel privado es la fuente principal. Esto evita que una fuente externa antigua o incompleta oculte eventos creados desde /gestion-maria.
-  if (Array.isArray(cmsEvents) && cmsEvents.length > 0) return cmsEvents
+  // El panel puede sobrescribir eventos existentes, pero no debe hacer desaparecer los eventos base
+  // si por error solo se ha guardado uno. Se combinan por ID y el contenido del panel tiene prioridad.
+  if (Array.isArray(cmsEvents) && cmsEvents.length > 0) {
+    const byId = new Map(fallbackEvents.map((event) => [event.id, event]))
+    for (const event of cmsEvents) byId.set(event.id, { ...byId.get(event.id), ...event })
+    return Array.from(byId.values())
+  }
   const url = process.env.EVENTS_JSON_URL
   if (!url) return cmsEvents
   try {

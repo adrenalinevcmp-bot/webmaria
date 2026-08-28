@@ -92,7 +92,7 @@ export default async function HomePage() {
       <section className="border-t border-primary/15 bg-secondary/75">
         <div className="mx-auto max-w-6xl px-5 py-14 md:px-8 md:py-18">
           <SectionHeading eyebrow={homeSections.eventsEyebrow} title={homeSections.eventsTitle} align="center" className="mb-10" />
-          <div className="grid grid-cols-1 gap-7 md:grid-cols-2">
+          <div className="grid grid-cols-1 gap-8">
             {upcomingEvents.map((event) => <EventCard key={event.id} event={event} />)}
           </div>
         </div>
