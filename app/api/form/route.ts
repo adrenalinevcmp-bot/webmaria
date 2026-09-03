@@ -36,7 +36,8 @@ export async function POST(request: Request) {
 
     const apiKey = process.env.RESEND_API_KEY
     const to = process.env.ADMIN_NOTIFICATION_EMAIL || DEFAULT_ADMIN_EMAIL
-    const from = process.env.EMAIL_FROM
+    const resendDomain = process.env.RESEND_EMAIL_DOMAIN?.trim()
+    const from = process.env.EMAIL_FROM?.trim() || (resendDomain ? `El Despertar <web@${resendDomain}>` : undefined)
 
     const details = Object.entries(body)
       .filter(([key]) => !['website', 'privacy'].includes(key))
